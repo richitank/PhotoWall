@@ -12,7 +12,7 @@ class AddPhoto extends Component {
         console.log(imageLink);
         console.log(description);
         const post = {
-            id:Number(new Date()),
+            id:Number(new Date()), //Date finction to sort the photos according to date
             description:description,
             imageLink:imageLink
         }
