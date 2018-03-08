@@ -12,7 +12,7 @@ class AddPhoto extends Component {
         console.log(imageLink);
         console.log(description);
         const post = {
-            id:0,
+            id:Number(new Date()),
             description:description,
             imageLink:imageLink
         }
