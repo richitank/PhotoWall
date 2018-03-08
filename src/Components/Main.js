@@ -2,6 +2,9 @@ import React, {Component} from 'react'
 
 import Title from './Title'
 import PhotoWall from './PhotoWall'
+import AddPhoto from './AddPhoto'
+import {Route} from 'react-router-dom'
+import { withRouter } from "react-router-dom";
 
 class Main extends Component {
 
@@ -22,37 +25,43 @@ class Main extends Component {
                 id: "2",
                 description: "On a vacation!",
                 imageLink: "https://fm.cnbc.com/applications/cnbc.com/resources/img/editorial/2017/08/24/104670887-VacationExplainsTHUMBWEB.1910x1000.jpg"
-                }]
+                }],
+                screen: 'photos' //photos, addPhotos
         }
         this.removePhoto = this.removePhoto.bind(this);
-      //  console.log("constructor");
     }
     removePhoto(postRemoved){
         console.log(postRemoved.description);
         this.setState((state) => ({
+
             posts: state.posts.filter(post => post !== postRemoved)
         }))
     }
 
-    componentDidMount() {
-       // console.log("componentDidMount");
-    }
-
-    componentDidUpdate(prevProps, prevState) {
-      //  alert("re-render");
-        console.log(prevState.posts);
-        console.log(this.state);
+    addPhoto(postSumitted){
+        this.setState(state => ({
+            posts: state.posts.concat([postSumitted])
+        }))
     }
 
     render(){
        // console.log("render");
-        return (
-            <div>
-                <Title title = {"Photowall"} />   
-                <PhotoWall posts = {this.state.posts} onRemovePhoto = {this.removePhoto} />
-            </div> 
-            )       
+        return (<div>  
+            <Route exact path = "/" render = {() => (        
+                    <div>
+                        <Title title = {"Photowall"} />   
+                        <PhotoWall posts = {this.state.posts} onRemovePhoto = {this.removePhoto}/>
+                    </div>
+                    )}/>   
+            <Route path = "/AddPhoto" render = {(history) => (
+             <AddPhoto onAddPhoto = {(addedPost) => { //The array post is being stored in the variable addPost
+                    this.addPhoto(addedPost)
+                    this.props.history.push("/")
+             }}/>
+        )}/>
+                </div>
+        )                  
     }
-}
 
-export default Main
+}
+export default withRouter(Main)
